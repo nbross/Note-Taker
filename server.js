@@ -24,13 +24,17 @@ app.get('/api/notes', function(req, res) {
     })
 });
 
-app.post('/api/notes', (req, res) => {
-    const dataNotes = fs.readFileSync(path.join(__dirname, './develop/db/db.json'), "utf-8");
-    const parseNotes = JSON.parse(dataNotes);
-    parseNotes.push(req.body);
-
-    fs.writeFileSync(path.join(__dirname, './develop/db/db.json'), JSON.stringify(parseNotes), "utf-8");
-    res.json("You have successfully added a note!");
+app.post('/api/notes', function(req, res) {
+    const newNote = req.body;
+    interpretFileAsync('./develop/db/db.json', 'utf8').then(function(data) {
+        const newNotes = [].concat(JSON.parse(data));
+        newNote.id = newNotes.length + 1
+        newNotes.push(newNote);
+        return newNotes
+    }).then(function(notes) {
+        createFileAsync('./develop/db/db.json', JSON.stringify(notes))
+        res.json(newNote);
+    })
 });
 
 app.get('*', (req, res) => {
