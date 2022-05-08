@@ -1,8 +1,10 @@
 // Dependencies
 const express = require('express');
+const util = require('util');
 const path = require('path');
 const fs = require('fs');
-
+const interpretFileAsync = util.promisify(fs.readFile);
+const createFileAsync = util.promisify(fs.writeFile);
 // boilerplate server setup
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -15,10 +17,11 @@ app.get('/notes', (req, res) => {
     res.sendFile(path.join(__dirname, './develop/public/notes.html'));
 });
 
-app.get('/api/notes', (req, res) => {
-    const dataNotes = fs.readFileSync(path.join(__dirname, './develop/db/db.json'), "utf-8");
-    const parseNotes = JSON.parse(dataNotes);
-    res.json(parseNotes);
+app.get('/api/notes', function(req, res) {
+    interpretFileAsync('./develop/db/db.json', 'utf8').then(function(data) {
+        notes = [].concat(JSON.parse(data))
+        res.json(notes);
+    })
 });
 
 app.post('/api/notes', (req, res) => {
