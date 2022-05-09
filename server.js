@@ -58,6 +58,10 @@ app.delete('/api/notes/:id', function (req, res) {
     })
 });
 
+app.get('/', function(req, res) {
+    res.sendFile(path.join(__dirname, './develop/public/index.html'));
+});
+
 app.listen(PORT, () => {
     console.log(`API server now on port ${PORT}!`);
 });
