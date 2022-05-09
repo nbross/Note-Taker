@@ -26,3 +26,23 @@ THEN that note appears in the right-hand column
 WHEN I click on the Write icon in the navigation at the top of the page
 THEN I am presented with empty fields to enter a new note title and the note’s text in the right-hand column
 ```
+## Installation
+The following necessary dependencies must be installed to run the application properly: Node.js, VScode, express.js, util, fs and a terminal.
+
+## Walkthrough vid showing that it works. Heroku Not Working!
+[A walkthrough video of the Note Taker](https://youtu.be/dvFF8djzdPY)
+
+## Run App
+The following command is needed to run the app: npm start
+
+## Screenshot
+
+![Note-Taker](./Develop/public/assets/images/2022-05-08.png)
+
+## Repo link
+
+Git Hub Repo: https://github.com/nbross/Note-Taker
+
+## Deployed App (NOT WORKING)
+
+Heroku Link: https://note-taker-app-nbross.herokuapp.com/
