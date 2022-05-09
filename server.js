@@ -25,15 +25,15 @@ app.get('/api/notes', function(req, res) {
 });
 
 app.post('/api/notes', function(req, res) {
-    const newNote = req.body;
+    const createNote = req.body;
     interpretFileAsync('./develop/db/db.json', 'utf8').then(function(data) {
-        const newNotes = [].concat(JSON.parse(data));
-        newNote.id = newNotes.length + 1
-        newNotes.push(newNote);
-        return newNotes
+        const createNotes = [].concat(JSON.parse(data));
+        createNote.id = createNotes.length + 1
+        createNotes.push(createNote);
+        return createNotes
     }).then(function(notes) {
         createFileAsync('./develop/db/db.json', JSON.stringify(notes))
-        res.json(newNote);
+        res.json(createNote);
     })
 });
 
@@ -42,23 +42,21 @@ app.get('*', (req, res) => {
 });
 
 app.delete('/api/notes/:id', function (req, res) {
-    console.log("Req.params:", req.params);
     const deleteNote = parseInt(req.params.id);
-    console.log(deleteNote);
-
-    for (let i = 0; i < dbJson.length; i++) {
-        if (deleteNote === dbJson[i].id) {
-            dbJson.splice(i, 1);
-
-            let noteJson = JSON.stringify(dbJson, null, 2);
-            writeFileAsync("./develop/db/db.json", noteJson).then(function () {
-                console.log("Your note has been deleted!");
-            });
+    interpretFileAsync('./develop/db/db.json', 'utf8').then(function(data) {
+        const createdNotes = [].concat(JSON.parse(data));
+        const createdNoteText = []
+        for (let i = 0; i<notes.length; i++) {
+            if(deleteNote !== createdNotes[i].id) {
+                createdNoteText.push(createdNotes[i])
+            }
         }
-    }
-    res.json(dbJson);
+        return createdNoteText
+    }).then (function(notes) {
+        createFileAsync('./develop/db/db.json', JSON.stringify(notes))
+        res.send('congrats the note was saved!')
+    })
 });
-
 
 app.listen(PORT, () => {
     console.log(`API server now on port ${PORT}!`);
